@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const CountryView = __webpack_require__(/*! ./views/country_view.js */ \"./src/views/country_view.js\")\nconst SelectView = __webpack_require__(/*! ./views/select_view.js */ \"./src/views/select_view.js\")\nconst Countries = __webpack_require__(/*! ./models/countries.js */ \"./src/models/countries.js\")\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n    console.log('javascript loaded');\n\n\n    \n})\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const CountryView = __webpack_require__(/*! ./views/country_view.js */ \"./src/views/country_view.js\")\nconst SelectView = __webpack_require__(/*! ./views/select_view.js */ \"./src/views/select_view.js\")\nconst Countries = __webpack_require__(/*! ./models/countries.js */ \"./src/models/countries.js\")\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n    console.log('javascript loaded');\n\n\n    const countries = new Countries('https://restcountries.eu/rest/v2/regionalbloc/au')\n    countries.getData()\n\n    \n})\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -108,6 +108,17 @@ eval("const PubSub = {\n    publish: function (channel, payload) {\n      const 
 
 /***/ }),
 
+/***/ "./src/helpers/request_helper.js":
+/*!***************************************!*\
+  !*** ./src/helpers/request_helper.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const RequestHelper = function (url) {\n    this.url = url;\n  };\n  \n  RequestHelper.prototype.get = function () {\n     return fetch(this.url)\n      .then(response => response.json())\n      .catch((error) => {console.log(\"Error in get:\", error);\n      })\n  };\n  \n  module.exports = RequestHelper;\n\n//# sourceURL=webpack:///./src/helpers/request_helper.js?");
+
+/***/ }),
+
 /***/ "./src/models/countries.js":
 /*!*********************************!*\
   !*** ./src/models/countries.js ***!
@@ -115,7 +126,7 @@ eval("const PubSub = {\n    publish: function (channel, payload) {\n      const 
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\n\nconst Countries = function(){\n\n}\n\nmodule.exports = Countries;\n\n//# sourceURL=webpack:///./src/models/countries.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\nconst RequestHelper = __webpack_require__(/*! ../helpers/request_helper */ \"./src/helpers/request_helper.js\")\n\n\nconst Countries = function(url){\n    this.url = url\n    this.countries = null\n}\n\nCountries.prototype.getData = function(){\n    const data = new RequestHelper(this.url)\n    data.get()\n    .then((countryList) => {\n        this.countries = countryList\n        PubSub.publish('Countries:all-countries', this.countries)\n        console.log('Countries has published Countries:all-countries');\n        \n    })\n}\n\nmodule.exports = Countries;\n\n//# sourceURL=webpack:///./src/models/countries.js?");
 
 /***/ }),
 
@@ -137,7 +148,7 @@ eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/he
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst SelectView = function(){\n\n}\n\nmodule.exports = SelectView;\n\n//# sourceURL=webpack:///./src/views/select_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst SelectView = function(){\n\n}\n\nSelectView.prototype.bindEvents = function(){\n    PubSub.subscribe('Countries:all-countries', (event) => {\n        console.log('SelectView subscribed to Countries:all-countries');\n        const allCountries = event.detail\n        this.getCountries(allCountries)\n        \n    })\n}\n\nmodule.exports = SelectView;\n\n//# sourceURL=webpack:///./src/views/select_view.js?");
 
 /***/ })
 

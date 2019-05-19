@@ -7,5 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('javascript loaded');
 
 
+    const countries = new Countries('https://restcountries.eu/rest/v2/regionalbloc/au')
+    countries.getData()
+
     
 })
