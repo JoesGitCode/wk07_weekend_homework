@@ -1,15 +1,23 @@
 const PubSub = require('../helpers/pub_sub.js')
 
-const SelectView = function(){
-
+const SelectView = function(element){
+    this.element = element
 }
 
 SelectView.prototype.bindEvents = function(){
     PubSub.subscribe('Countries:all-countries', (event) => {
         console.log('SelectView subscribed to Countries:all-countries');
-        const allCountries = event.detail
-        this.getCountries(allCountries)
+        console.log(event.detail);
         
+    this.element.addEventListener('change', (event) => {
+        selectedIndex = event.target.value
+        console.log(selectedIndex);
+
+        PubSub.publish('SelectView:single-country-select', selectedIndex)
+        console.log('SelectView published SelectView:single-country-select');
+        
+        
+    })        
     })
 }
 

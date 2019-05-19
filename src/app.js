@@ -6,6 +6,9 @@ const Countries = require('./models/countries.js')
 document.addEventListener('DOMContentLoaded', () => {
     console.log('javascript loaded');
 
+    const countryDropdown = document.querySelector('select#country-select')
+    const countrySelectView = new SelectView(countryDropdown)
+    countrySelectView.bindEvents()
 
     const countries = new Countries('https://restcountries.eu/rest/v2/regionalbloc/au')
     countries.getData()

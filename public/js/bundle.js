@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const CountryView = __webpack_require__(/*! ./views/country_view.js */ \"./src/views/country_view.js\")\nconst SelectView = __webpack_require__(/*! ./views/select_view.js */ \"./src/views/select_view.js\")\nconst Countries = __webpack_require__(/*! ./models/countries.js */ \"./src/models/countries.js\")\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n    console.log('javascript loaded');\n\n\n    const countries = new Countries('https://restcountries.eu/rest/v2/regionalbloc/au')\n    countries.getData()\n\n    \n})\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const CountryView = __webpack_require__(/*! ./views/country_view.js */ \"./src/views/country_view.js\")\nconst SelectView = __webpack_require__(/*! ./views/select_view.js */ \"./src/views/select_view.js\")\nconst Countries = __webpack_require__(/*! ./models/countries.js */ \"./src/models/countries.js\")\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n    console.log('javascript loaded');\n\n    const countryDropdown = document.querySelector('select#country-select')\n    const countrySelectView = new SelectView(countryDropdown)\n    countrySelectView.bindEvents()\n\n    const countries = new Countries('https://restcountries.eu/rest/v2/regionalbloc/au')\n    countries.getData()\n\n    \n})\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -148,7 +148,7 @@ eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/he
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst SelectView = function(){\n\n}\n\nSelectView.prototype.bindEvents = function(){\n    PubSub.subscribe('Countries:all-countries', (event) => {\n        console.log('SelectView subscribed to Countries:all-countries');\n        const allCountries = event.detail\n        this.getCountries(allCountries)\n        \n    })\n}\n\nmodule.exports = SelectView;\n\n//# sourceURL=webpack:///./src/views/select_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst SelectView = function(element){\n    this.element = element\n}\n\nSelectView.prototype.bindEvents = function(){\n    PubSub.subscribe('Countries:all-countries', (event) => {\n        console.log('SelectView subscribed to Countries:all-countries');\n        console.log(event.detail);\n        \n    this.element.addEventListener('change', (event) => {\n        selectedIndex = event.target.value\n        console.log(selectedIndex);\n\n        PubSub.publish('SelectView:single-country-select', selectedIndex)\n        console.log('SelectView published SelectView:single-country-select');\n        \n        \n    })        \n    })\n}\n\nmodule.exports = SelectView;\n\n//# sourceURL=webpack:///./src/views/select_view.js?");
 
 /***/ })
 
