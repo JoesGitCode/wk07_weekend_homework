@@ -10,8 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const countrySelectView = new SelectView(countryDropdown)
     countrySelectView.bindEvents()
 
+    const countryInfo = document.querySelector('section#country-info')
+    const countryView = new CountryView(countryInfo)
+    countryView.bindEvents()
+
     const countries = new Countries('https://restcountries.eu/rest/v2/regionalbloc/au')
     countries.getData()
+    countries.bindEvents()
 
     
 })
