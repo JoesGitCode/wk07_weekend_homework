@@ -11,8 +11,8 @@ CountryView.prototype.bindEvents = function(){
         
         console.log('should be all of a countrys data?', event.detail);
         this.render(event.detail)
-        this.renderMap(event.detail)
         
+        this.renderMap(event.detail)
     })
 }
 
@@ -20,9 +20,21 @@ CountryView.prototype.render = function(countryInfo){
 
     this.container.innerHTML = ''
 
-    const countryName = document.createElement('h2')
+    const countryName = document.createElement('h3')
     countryName.textContent = `Name: ${countryInfo.name}`
     this.container.appendChild(countryName)
+
+    const countryPopulation = document.createElement('h3')
+    countryPopulation.textContent = `Population: ${countryInfo.population}`
+    this.container.appendChild(countryPopulation)
+
+    const squared = '2'.sup()
+    console.log(squared);
+    
+
+    const countryArea = document.createElement('h3')
+    countryArea.textContent = `Area: ${countryInfo.area} km2`
+    this.container.appendChild(countryArea)
 
     
 

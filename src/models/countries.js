@@ -25,6 +25,7 @@ Countries.prototype.getData = function(){
     data.get()
     .then((countryList) => {
         this.countries = countryList
+        
         PubSub.publish('Countries:all-countries', this.countries)
         console.log('Countries has published Countries:all-countries');
         
